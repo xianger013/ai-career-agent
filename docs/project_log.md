@@ -119,3 +119,33 @@
 - 下载只在浏览器端生成，不同步后端文件。
 - 仍未做登录、多用户、Docker 和正式向量库。
 
+## Phase 4 正式 RAG 升级
+
+完成内容：
+
+- 新增 `RAG_MODE=fallback/vector` 配置。
+- 完善 OpenAI-compatible `EmbeddingService`。
+- 新增轻量本地向量存储，持久化到 `backend/data/vector_store/`。
+- 保留 fallback keyword search，vector 失败时可自动 fallback 并返回 `retrieval_mode`。
+- 上传和检索接口增加 `retrieval_mode` 和 `retrieval_error`。
+- CareerAgent 报告显示检索模式、来源文件、chunk_index、score 和证据摘要。
+- 增加 embedding、vector store、vector mode 文档检索测试。
+
+技术点：
+
+- Embedding API 封装和错误脱敏。
+- cosine similarity 向量检索。
+- RAG 模式配置化。
+- Agent grounded evidence 展示。
+
+验收结果：
+
+- `RAG_MODE=fallback` 保持原演示流程。
+- `RAG_MODE=vector` 可通过 mock embedding 测试上传和检索链路。
+- 后端 pytest 通过。
+
+已知限制：
+
+- 当前向量库是轻量 JSON 本地存储，不适合大规模数据。
+- 尚未接入 ChromaDB/FAISS。
+- 没有 hybrid search、rerank 和多用户 collection 隔离。

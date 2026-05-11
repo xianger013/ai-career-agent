@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from sqlalchemy.orm import Session
 
-from app.services.vector_store import VectorStore
+from app.services.document_service import DocumentService
 
 
 class SearchProfileTool:
@@ -11,8 +11,7 @@ class SearchProfileTool:
     input_schema = {"type": "object", "required": ["query"]}
 
     def __init__(self, db: Session) -> None:
-        self.vector_store = VectorStore(db)
+        self.document_service = DocumentService(db)
 
     async def run(self, query: str, top_k: int = 5) -> list[dict]:
-        return self.vector_store.search(query, top_k=top_k)
-
+        return (await self.document_service.search(query, top_k=top_k)).results

@@ -17,6 +17,7 @@ type SearchResult = {
   score: number;
   source: string;
   metadata: Record<string, unknown>;
+  retrieval_mode: string;
 };
 
 type UploadResult = {
@@ -24,6 +25,7 @@ type UploadResult = {
   filename: string;
   file_type: string;
   chunk_count: number;
+  retrieval_mode: string;
 };
 
 type RunStatus = "idle" | "running" | "done" | "error";
@@ -94,7 +96,7 @@ export default function Home() {
     try {
       const result = await uploadDocument(selectedFile);
       setUploadResult(result);
-      setProfileMessage(`上传成功，切分 ${result.chunk_count} 个片段。`);
+      setProfileMessage(`上传成功，切分 ${result.chunk_count} 个片段，检索模式：${retrievalModeLabel(result.retrieval_mode)}。`);
     } catch (error) {
       setProfileMessage(error instanceof Error ? error.message : "上传失败");
     }
@@ -109,7 +111,7 @@ export default function Home() {
     try {
       const response = await searchDocuments(query, 5);
       setSearchResults(response.results);
-      setProfileMessage(`检索完成，返回 ${response.results.length} 条片段。`);
+      setProfileMessage(`检索完成，模式：${retrievalModeLabel(response.retrieval_mode)}，返回 ${response.results.length} 条片段。`);
     } catch (error) {
       setProfileMessage(error instanceof Error ? error.message : "检索失败");
     }
@@ -222,7 +224,7 @@ export default function Home() {
             {jobId ? <Badge>job_id: {jobId}</Badge> : null}
           </Card>
 
-          <Card title="2. 个人资料上传区" description="当前支持 .md / .txt；检索为 MVP fallback 关键词检索。">
+          <Card title="2. 个人资料上传区" description="当前支持 .md / .txt；可使用 fallback 检索或 Embedding + JSON VectorStore。">
             <Field label="选择文件">
               <input
                 className="block w-full rounded-xl border border-line bg-white px-3 py-2 text-sm"
@@ -240,6 +242,7 @@ export default function Home() {
             {uploadResult ? (
               <div className="rounded-xl bg-paper p-3 text-sm text-ink">
                 文件：{uploadResult.filename}，类型：{uploadResult.file_type}，片段：{uploadResult.chunk_count}
+                ，检索模式：{retrievalModeLabel(uploadResult.retrieval_mode)}
               </div>
             ) : null}
             <Field label="检索测试 query">
@@ -283,7 +286,7 @@ export default function Home() {
                   <div key={`${result.source}-${result.chunk_id}`} className="rounded-xl border border-line bg-paper p-3">
                     <div className="mb-2 flex items-center justify-between text-xs text-muted">
                       <span>{result.source}</span>
-                      <span>score {result.score}</span>
+                      <span>{retrievalModeLabel(result.retrieval_mode)} | score {result.score}</span>
                     </div>
                     <p className="text-sm leading-6 text-ink">{result.content}</p>
                   </div>
@@ -354,6 +357,13 @@ function statusLabel(status: StreamStep["status"]) {
   if (status === "running") return "进行中";
   if (status === "done") return "已完成";
   return "错误";
+}
+
+function retrievalModeLabel(mode: string) {
+  if (mode === "fallback") return "fallback keyword search";
+  if (mode === "vector") return "Embedding + JSON VectorStore";
+  if (mode === "fallback_due_to_vector_error") return "向量检索失败，已回退 fallback";
+  return mode || "未知模式";
 }
 
 function Card({

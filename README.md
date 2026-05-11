@@ -1,37 +1,77 @@
 # AI Career Agent
 
-AI Career Agent 是一个面向大学生求职的全栈 AI Agent 作品集项目。它支持岗位 JD 创建、个人资料上传、fallback RAG 检索、Agent 工作流分析、SSE 阶段式流式反馈、Markdown 报告渲染、复制和下载。
+## 1. 项目简介
 
-## 当前能力覆盖
+AI Career Agent 是一个面向大学生和求职者的 AI 求职能力分析与学习规划系统。用户可以输入岗位 JD、上传个人资料，系统通过 LLM、RAG、Agent 工作流和 SSE，生成岗位能力拆解、个人能力差距分析、学习路线、项目建议、简历描述和面试问答。
 
-- LLM API：封装 OpenAI-compatible Chat Completions 调用，并提供清晰错误处理。
-- Prompt Engineering：Prompt 放在后端 `app/prompts/`，避免硬编码在业务逻辑里。
-- Agent workflow：CareerAgent 编排岗位分析、资料检索、差距分析、学习路线、项目建议、简历描述和面试问答。
-- fallback RAG：支持资料上传、文本切分、关键词 fallback 检索和证据引用。
-- FastAPI：后端 API、Pydantic schema、SQLAlchemy、SQLite。
-- SSE：通过 EventSource 展示阶段式运行进度。
-- Next.js：单页工作台完成完整演示链路。
-- Markdown report：最终报告支持渲染、复制和下载。
+项目定位是作品集级全栈 AI Agent：默认可用 fallback keyword search 本地演示，也支持配置 OpenAI-compatible Embedding + 本地 JSON VectorStore 进行向量检索。
 
-## 项目截图占位
+## 2. 项目截图
 
-### 首页截图
+请将本地演示截图保存到 `docs/assets/` 下。
 
-> 放置 `AI Career Agent 工作台` 首屏截图。
+- 首页截图：`docs/assets/homepage.png`
+- 创建岗位截图：`docs/assets/job-created.png`
+- Agent 运行截图：`docs/assets/agent-running.png`
+- 报告结果截图：`docs/assets/report-result.png`
+- 报告下载截图：`docs/assets/report-download.png`
 
-### 创建岗位截图
+## 3. 核心功能
 
-> 放置填充示例岗位并创建成功后显示 `job_id` 的截图。
+- 岗位 JD 创建与分析。
+- 个人资料 `.md` / `.txt` 上传。
+- fallback keyword search 本地检索。
+- OpenAI-compatible Embedding + JSON VectorStore 向量检索。
+- CareerAgent 工作流编排。
+- SSE 阶段式流式输出。
+- Markdown 报告渲染、复制、下载。
+- 示例岗位和示例目标一键填充。
 
-### Agent 运行截图
+## 4. 技术栈
 
-> 放置步骤日志显示 running / done 状态的截图。
+后端：
 
-### 报告结果截图
+- FastAPI
+- Pydantic
+- SQLAlchemy
+- SQLite
+- httpx
+- pytest
 
-> 放置 Markdown 渲染报告和下载按钮的截图。
+前端：
 
-## 后端启动
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+- react-markdown
+- SSE / EventSource
+
+AI：
+
+- OpenAI-compatible Chat Completions API
+- OpenAI-compatible Embeddings API
+- Prompt Engineering
+- RAG
+- Agent Workflow
+
+## 5. 系统架构
+
+```mermaid
+flowchart LR
+    A["Next.js Frontend"] --> B["FastAPI API"]
+    B --> C["CareerAgent"]
+    C --> D["Tools / Services"]
+    D --> E["LLMService"]
+    D --> F["Document Search"]
+    F --> G["JSON VectorStore"]
+    F --> H["fallback keyword search"]
+    C --> I["Markdown Report"]
+```
+
+## 6. 快速开始
+
+### 后端启动
 
 Windows PowerShell 推荐使用 `python -m uvicorn`。
 
@@ -60,7 +100,7 @@ API 文档：
 http://127.0.0.1:8000/docs
 ```
 
-## 前端启动
+### 前端启动
 
 ```powershell
 cd frontend
@@ -75,36 +115,43 @@ npm run dev
 http://localhost:3000
 ```
 
-前端环境变量：
+## 7. 环境变量说明
 
-```env
-NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000
-```
+后端配置见 `backend/.env.example`。
 
-## 快速演示流程
+- `LLM_API_KEY`：LLM API Key，占位符可用于 fallback 演示。
+- `LLM_BASE_URL`：OpenAI-compatible chat completions base URL。
+- `LLM_MODEL`：聊天模型名称。
+- `RAG_MODE`：`fallback` 或 `vector`。
+- `EMBEDDING_API_KEY`：embedding API Key，仅 vector 模式需要。
+- `EMBEDDING_BASE_URL`：OpenAI-compatible embeddings base URL。
+- `EMBEDDING_MODEL`：embedding 模型名称。
+- `VECTOR_STORE_TYPE=json`：当前版本使用本地 JSON VectorStore。
+- `NEXT_PUBLIC_API_BASE_URL`：前端连接后端地址，默认 `http://127.0.0.1:8000`。
+
+说明：
+
+- `RAG_MODE=fallback` 不需要 embedding key。
+- `RAG_MODE=vector` 需要 embedding API。
+- 当前版本使用 OpenAI-compatible Embedding + 本地 JSON VectorStore，后续可替换为 ChromaDB/FAISS。
+- `chroma` / `faiss` 只是未来可选值，当前尚未实际接入。
+
+## 8. 完整演示流程
 
 1. 启动后端。
 2. 启动前端。
 3. 打开 `http://localhost:3000`。
 4. 点击“填充示例岗位”。
 5. 点击“创建岗位”，确认页面显示 `job_id`。
-6. 上传 `backend/data/samples/sample_profile.md` 或自己的 `.md` / `.txt` 资料。
-7. 输入 query 并点击“检索资料”。
+6. 上传 `backend/data/samples/sample_profile.md` 或自己的 `my_profile.md`。
+7. 点击“检索资料”查看召回片段。
 8. 点击“填充示例目标”。
 9. 点击“运行 Career Agent”。
-10. 查看步骤日志和阶段内容。
-11. 查看 Markdown 渲染报告。
+10. 查看步骤日志。
+11. 查看 Markdown 报告。
 12. 点击“下载 Markdown 报告”。
 
-## 文档索引
-
-- [后端 MVP 验收](docs/backend_mvp_acceptance.md)
-- [演示指南](docs/demo_guide.md)
-- [项目日志](docs/project_log.md)
-- [简历包装](docs/resume_packaging.md)
-- [技术复盘](docs/technical_review.md)
-
-## 测试与构建
+## 9. 测试
 
 后端：
 
@@ -120,12 +167,45 @@ cd frontend
 npm run build
 ```
 
-## 已知限制
+当前结果：
 
-- 阶段式 SSE，不是 token 级模型流式输出。
-- fallback 检索，不是生产级向量检索。
-- 单用户本地项目，没有多用户数据隔离。
-- 无登录权限系统。
-- 暂无 Docker。
-- `.pdf` / `.docx` 深度解析未实现。
+- backend：14 passed
+- frontend：build passed
+
+## 10. 当前限制
+
+- 当前 SSE 是阶段式流式，不是 token 级流式。
+- 当前向量存储是 JSON VectorStore，不适合大规模生产。
+- 当前没有登录、多用户隔离和权限系统。
+- 当前没有 Docker。
+- 当前没有 reranker 和 hybrid search。
+- ChromaDB/FAISS 尚未实际接入，只预留替换方向。
+
+## 11. 后续路线
+
+- Hybrid Search：keyword + vector。
+- ChromaDB/FAISS。
+- Reranker。
+- PDF / DOCX 解析。
+- Docker 部署。
+- 多用户数据隔离。
+- 更完善的评测集。
+
+## 12. 简历包装
+
+简短表述：
+
+> AI Career Agent 是一个面向大学生求职的 AI Agent 工作台，基于 FastAPI、Next.js、LLM API、RAG 和 SSE，实现岗位 JD 分析、个人资料检索、能力差距分析、学习路线生成、项目建议、简历描述和面试问答生成。
+
+详细简历版本见 [docs/resume_final.md](docs/resume_final.md)。
+
+## 文档索引
+
+- [演示指南](docs/demo_guide.md)
+- [RAG 设计](docs/rag_design.md)
+- [简历最终表述](docs/resume_final.md)
+- [面试讲解稿](docs/interview_script.md)
+- [技术问答](docs/interview_qa.md)
+- [项目复盘](docs/project_retrospective.md)
+- [发布前检查清单](docs/release_checklist.md)
 

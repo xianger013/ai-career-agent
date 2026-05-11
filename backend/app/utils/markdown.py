@@ -17,6 +17,38 @@ def _section_list(items: list[str] | list[dict]) -> str:
     return "\n".join(lines)
 
 
+def _evidence_list(items: list[dict]) -> str:
+    if not items:
+        return "- 未检索到足够个人资料证据"
+
+    lines: list[str] = []
+    for item in items:
+        metadata = item.get("metadata", {})
+        filename = metadata.get("filename") or item.get("source") or "unknown"
+        chunk_index = metadata.get("chunk_index", "unknown")
+        score = item.get("score", 0)
+        mode = item.get("retrieval_mode", "unknown")
+        content = (item.get("content") or "").replace("\n", " ").strip()
+        summary = content[:240] + ("..." if len(content) > 240 else "")
+        lines.append(
+            f"- 检索模式: {mode} | 来源: {filename} | chunk_index: {chunk_index} | score: {score}\n"
+            f"  - 证据摘要: {summary}"
+        )
+    return "\n".join(lines)
+
+
+def _retrieval_modes(items: list[dict]) -> str:
+    modes = sorted({item.get("retrieval_mode", "unknown") for item in items}) if items else []
+    if not modes:
+        return "未检索到足够个人资料证据"
+    labels = {
+        "fallback": "fallback keyword search",
+        "vector": "vector RAG",
+        "fallback_due_to_vector_error": "fallback_due_to_vector_error",
+    }
+    return "、".join(labels.get(mode, mode) for mode in modes)
+
+
 def build_analysis_report(
     job: Job,
     job_analysis: dict,
@@ -67,7 +99,7 @@ def build_analysis_report(
             "## 2. 岗位能力结构化拆解",
             job_analysis.get("raw_markdown", ""),
             "## 3. 用户资料证据",
-            _section_list(profile_evidence),
+            f"检索模式: {_retrieval_modes(profile_evidence)}\n\n{_evidence_list(profile_evidence)}",
             "## 4. 能力匹配情况",
             _section_list(gap_analysis.get("matched_skills", [])),
             "## 5. 能力差距分析",
@@ -91,4 +123,3 @@ def build_analysis_report(
             ),
         ]
     )
-

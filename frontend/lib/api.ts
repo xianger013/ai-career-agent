@@ -63,10 +63,13 @@ export async function uploadDocument(file: File) {
   });
   return parseResponse<{
     id: number;
+    document_id: number;
     filename: string;
     file_type: string;
     created_at: string;
     chunk_count: number;
+    retrieval_mode: string;
+    retrieval_error?: string | null;
   }>(response);
 }
 
@@ -77,6 +80,8 @@ export async function searchDocuments(query: string, topK = 5) {
     body: JSON.stringify({ query, top_k: topK }),
   });
   return parseResponse<{
+    retrieval_mode: string;
+    retrieval_error?: string | null;
     results: Array<{
       document_id: number | null;
       chunk_id: string;
@@ -84,6 +89,7 @@ export async function searchDocuments(query: string, topK = 5) {
       score: number;
       source: string;
       metadata: Record<string, unknown>;
+      retrieval_mode: string;
     }>;
   }>(response);
 }

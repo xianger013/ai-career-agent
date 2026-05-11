@@ -20,20 +20,27 @@ async def upload_document(file: UploadFile = File(...), db: Session = Depends(ge
     if not file.filename:
         raise HTTPException(status_code=400, detail="Uploaded file must have a filename.")
     try:
-        document, chunk_count = await DocumentService(db).save_document(file.filename, await file.read())
+        result = await DocumentService(db).save_document(file.filename, await file.read())
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
+    document = result.document
     return {
         "id": document.id,
+        "document_id": document.id,
         "filename": document.filename,
         "file_type": document.file_type,
         "created_at": document.created_at,
-        "chunk_count": chunk_count,
+        "chunk_count": result.chunk_count,
+        "retrieval_mode": result.retrieval_mode,
+        "retrieval_error": result.retrieval_error,
     }
 
 
 @router.post("/search", response_model=DocumentSearchResponse)
-def search_documents(payload: DocumentSearchRequest, db: Session = Depends(get_db)) -> dict:
-    results = DocumentService(db).search(payload.query, top_k=payload.top_k)
-    return {"results": results}
-
+async def search_documents(payload: DocumentSearchRequest, db: Session = Depends(get_db)) -> dict:
+    result_set = await DocumentService(db).search(payload.query, top_k=payload.top_k)
+    return {
+        "retrieval_mode": result_set.retrieval_mode,
+        "retrieval_error": result_set.retrieval_error,
+        "results": result_set.results,
+    }

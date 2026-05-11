@@ -41,3 +41,25 @@ token 级流式依赖 LLM provider 的 streaming 能力，也会增加前后端�
 - 增加 Docker 和部署说明。
 - 在引入登录前先设计清楚用户、资料、岗位和分析记录的数据隔离边界。
 
+## Phase 4 RAG 升级复盘
+
+### 为什么先保留 fallback
+
+fallback 是项目可演示性的底线。很多本地环境没有 embedding key，或者网络受限。如果直接移除 fallback，项目会从“开箱可跑”变成“必须配置外部服务”。保留 fallback 可以让默认体验稳定，同时让 vector 模式作为增强能力存在。
+
+### 为什么引入 RAG_MODE
+
+`RAG_MODE` 把运行模式显式化：
+
+- `fallback`：默认模式，不需要外部 embedding。
+- `vector`：显式启用 embedding + vector store。
+
+这让 README、测试和故障排查更清晰，也避免“配置了 key 但不确定系统到底走哪条路径”的问题。
+
+### 为什么不直接上复杂多路召回
+
+多路召回、rerank、query rewrite 都会增加调试和评测成本。当前项目仍是作品集 MVP，更重要的是先把 embedding、向量存储、检索模式标注、Agent 证据引用这些基础链路做好。
+
+### 当前 RAG 和生产级 RAG 的差距
+
+当前版本使用 OpenAI-compatible Embedding + 本地 JSON VectorStore，后续可替换为 ChromaDB/FAISS。JSON VectorStore 适合小规模演示，不适合大量数据；没有用户隔离、embedding cache、hybrid search、rerank、检索评测和权限控制。生产级 RAG 需要引入真正的向量数据库、检索评估、数据隔离和监控。

@@ -22,7 +22,12 @@ class Settings:
     embedding_api_key: str | None = os.getenv("EMBEDDING_API_KEY")
     embedding_base_url: str | None = os.getenv("EMBEDDING_BASE_URL")
     embedding_model: str = os.getenv("EMBEDDING_MODEL", "text-embedding-3-small")
-    vector_store_type: str = os.getenv("VECTOR_STORE_TYPE", "fallback")
+    embedding_provider: str = os.getenv("EMBEDDING_PROVIDER", "openai_compatible")
+    rag_mode: str = os.getenv("RAG_MODE", "fallback")
+    vector_store_type: str = os.getenv("VECTOR_STORE_TYPE", "json")
+    vector_store_dir: Path = Path(os.getenv("VECTOR_STORE_DIR", "./data/vector_store"))
+    chunk_size: int = int(os.getenv("CHUNK_SIZE", "800"))
+    chunk_overlap: int = int(os.getenv("CHUNK_OVERLAP", "120"))
     output_dir: Path = Path(os.getenv("OUTPUT_DIR", "./outputs"))
     upload_dir: Path = Path(os.getenv("UPLOAD_DIR", "./data/uploads"))
     request_timeout_seconds: float = float(os.getenv("REQUEST_TIMEOUT_SECONDS", "30"))
@@ -47,6 +52,10 @@ class Settings:
     @property
     def resolved_upload_dir(self) -> Path:
         return self.upload_dir if self.upload_dir.is_absolute() else BASE_DIR / self.upload_dir
+
+    @property
+    def resolved_vector_store_dir(self) -> Path:
+        return self.vector_store_dir if self.vector_store_dir.is_absolute() else BASE_DIR / self.vector_store_dir
 
 
 settings = Settings()

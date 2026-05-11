@@ -121,7 +121,35 @@ Error messages are truncated and the configured API key is redacted if it appear
 
 ## Retrieval Behavior
 
-Current retrieval is not a production vector search. `VectorStore` keeps the same `add_documents()` and `search()` interface expected from a vector database, but the implementation uses keyword token overlap for the MVP. This makes the backend easy to run locally and leaves a clean seam for replacing it with ChromaDB or FAISS later.
+The default mode is fallback keyword search:
+
+```env
+RAG_MODE=fallback
+```
+
+Vector mode uses OpenAI-compatible embeddings plus a lightweight local vector store:
+
+```env
+RAG_MODE=vector
+EMBEDDING_PROVIDER=openai_compatible
+EMBEDDING_API_KEY=your_embedding_api_key_here
+EMBEDDING_BASE_URL=https://api.openai.com/v1
+EMBEDDING_MODEL=text-embedding-3-small
+VECTOR_STORE_TYPE=json
+VECTOR_STORE_DIR=./data/vector_store
+CHUNK_SIZE=800
+CHUNK_OVERLAP=120
+```
+
+Current version uses OpenAI-compatible Embedding + local JSON VectorStore. Use this default:
+
+```env
+VECTOR_STORE_TYPE=json
+```
+
+`chroma` and `faiss` are future optional values, but they are not implemented in this version. If `VECTOR_STORE_TYPE=chroma` or `faiss` is configured, the backend continues to use JSON VectorStore and logs a warning.
+
+If vector mode fails because the embedding key is missing, the provider request fails, or the vector directory is not writable, document search falls back to keyword search and returns `retrieval_mode=fallback_due_to_vector_error`.
 
 ## API Examples
 
@@ -195,10 +223,13 @@ Response shape:
 ```json
 {
   "id": 1,
+  "document_id": 1,
   "filename": "sample_profile.md",
   "file_type": "md",
   "created_at": "2026-05-11T21:31:00",
-  "chunk_count": 1
+  "chunk_count": 1,
+  "retrieval_mode": "fallback",
+  "retrieval_error": null
 }
 ```
 
@@ -214,6 +245,8 @@ Response shape:
 
 ```json
 {
+  "retrieval_mode": "fallback",
+  "retrieval_error": null,
   "results": [
     {
       "document_id": 1,
@@ -221,7 +254,8 @@ Response shape:
       "content": "我使用 Python 和 FastAPI 做过一个课程项目...",
       "score": 0.42,
       "source": "sample_profile.md",
-      "metadata": {"chunk_index": 0, "embedding_id": "1:0:64"}
+      "metadata": {"chunk_index": 0, "embedding_id": null},
+      "retrieval_mode": "fallback"
     }
   ]
 }
@@ -292,6 +326,7 @@ Current coverage includes health check, text splitting, job analyzer fallback, f
 - No authentication or multi-user isolation.
 - `.pdf` and `.docx` parsing are not implemented.
 - Retrieval is keyword fallback, not ChromaDB or FAISS.
+- Vector mode currently uses local JSON VectorStore, not ChromaDB/FAISS.
 - Alembic migrations are not added yet; schema is created via SQLAlchemy metadata during startup.
 
 ## Next Steps

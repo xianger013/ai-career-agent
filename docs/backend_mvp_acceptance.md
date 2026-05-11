@@ -129,7 +129,12 @@ The following variables are present in `.env.example` and read by `app/config.py
 - `EMBEDDING_API_KEY`
 - `EMBEDDING_BASE_URL`
 - `EMBEDDING_MODEL`
+- `EMBEDDING_PROVIDER`
+- `RAG_MODE`
 - `VECTOR_STORE_TYPE`
+- `VECTOR_STORE_DIR`
+- `CHUNK_SIZE`
+- `CHUNK_OVERLAP`
 - `OUTPUT_DIR`
 - `UPLOAD_DIR`
 - `REQUEST_TIMEOUT_SECONDS`
@@ -164,4 +169,3 @@ Current tests:
 - Replace fallback retrieval with ChromaDB or FAISS through the existing `VectorStore` interface.
 - Add Dockerfile and docker-compose after the backend/frontend integration stabilizes.
 - Add integration tests for API upload/search/agent flows with isolated temporary databases.
-

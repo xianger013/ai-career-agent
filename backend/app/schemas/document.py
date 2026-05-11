@@ -15,7 +15,10 @@ class DocumentRead(BaseModel):
 
 
 class DocumentUploadResponse(DocumentRead):
+    document_id: int
     chunk_count: int
+    retrieval_mode: str
+    retrieval_error: str | None = None
 
 
 class DocumentSearchRequest(BaseModel):
@@ -30,8 +33,10 @@ class DocumentSearchResult(BaseModel):
     score: float
     source: str
     metadata: dict = Field(default_factory=dict)
+    retrieval_mode: str = "fallback"
 
 
 class DocumentSearchResponse(BaseModel):
+    retrieval_mode: str
+    retrieval_error: str | None = None
     results: list[DocumentSearchResult]
-
