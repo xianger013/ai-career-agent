@@ -1,0 +1,14 @@
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+backend/career_agent.db
+backend/outputs/*.md
+backend/data/uploads/*
+!backend/data/uploads/.gitkeep
+frontend/.env.local
+frontend/node_modules/
+frontend/.next/
+frontend/out/

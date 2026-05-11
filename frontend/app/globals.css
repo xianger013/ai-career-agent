@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #1f2933;
+  background: #f6f8fb;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(15, 118, 110, 0.12), transparent 28rem),
+    linear-gradient(180deg, #ffffff 0%, #f6f8fb 55%, #eef3f8 100%);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+@layer components {
+  .input {
+    @apply w-full rounded-xl border border-line bg-white px-3 py-2 text-sm text-ink outline-none transition focus:border-accent focus:ring-4 focus:ring-teal-100;
+  }
+
+  .button-primary {
+    @apply rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-teal-800;
+  }
+
+  .button-secondary {
+    @apply rounded-xl border border-line bg-white px-4 py-2 text-sm font-semibold text-ink transition hover:bg-paper;
+  }
+}
+
+@layer utilities {
+  .markdown-body {
+    @apply text-sm leading-7 text-ink;
+  }
+
+  .markdown-body h1 {
+    @apply mb-4 mt-1 border-b border-line pb-3 text-2xl font-semibold;
+  }
+
+  .markdown-body h2 {
+    @apply mb-3 mt-6 text-xl font-semibold;
+  }
+
+  .markdown-body h3 {
+    @apply mb-2 mt-4 text-base font-semibold;
+  }
+
+  .markdown-body ul,
+  .markdown-body ol {
+    @apply my-3 pl-6;
+  }
+
+  .markdown-body ul {
+    @apply list-disc;
+  }
+
+  .markdown-body ol {
+    @apply list-decimal;
+  }
+
+  .markdown-body li {
+    @apply my-1;
+  }
+
+  .markdown-body p {
+    @apply my-2;
+  }
+
+  .markdown-body code {
+    @apply rounded bg-slate-100 px-1.5 py-0.5 text-[0.85em] text-slate-800;
+  }
+
+  .markdown-body pre {
+    @apply my-4 overflow-auto rounded-2xl bg-slate-950 p-4 text-slate-100;
+  }
+
+  .markdown-body pre code {
+    @apply bg-transparent p-0 text-slate-100;
+  }
+}
