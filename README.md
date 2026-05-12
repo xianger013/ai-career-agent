@@ -8,13 +8,15 @@ AI Career Agent 是一个面向大学生和求职者的 AI 求职能力分析与
 
 ## 2. 项目截图
 
-请将本地演示截图保存到 `docs/assets/` 下。
+![首页截图](docs/assets/homepage.png)
 
-- 首页截图：`docs/assets/homepage.png`
-- 创建岗位截图：`docs/assets/job-created.png`
-- Agent 运行截图：`docs/assets/agent-running.png`
-- 报告结果截图：`docs/assets/report-result.png`
-- 报告下载截图：`docs/assets/report-download.png`
+![创建岗位截图](docs/assets/job-created.png)
+
+![Agent 运行截图](docs/assets/agent-running.png)
+
+![报告结果截图](docs/assets/report-result.png)
+
+![报告下载截图](docs/assets/report-download.png)
 
 ## 3. 核心功能
 
@@ -208,4 +210,3 @@ npm run build
 - [技术问答](docs/interview_qa.md)
 - [项目复盘](docs/project_retrospective.md)
 - [发布前检查清单](docs/release_checklist.md)
-
