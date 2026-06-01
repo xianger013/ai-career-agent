@@ -25,9 +25,9 @@ class GapAnalyzer:
             "missing_skills": missing,
             "priority_order": missing[:3] + partial[:2],
             "next_30_days": [
-                "用一个小项目打通岗位要求中的核心技术链路",
-                "为每个缺失技能补充一段可验证的项目证据",
-                "整理 README、接口示例、测试结果和部署方式",
+                "Use a small project to connect the core technical chain required by the role",
+                "Add verifiable project evidence for each missing skill",
+                "Organize the README, API examples, test results, and deployment notes",
             ],
         }
 

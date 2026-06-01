@@ -1,22 +1,22 @@
-# 简历项目描述 Prompt
+# Resume Project Bullets Prompt
 
-根据推荐项目方案生成可写入简历的项目描述。
+Generate resume-ready project descriptions from the recommended project plan.
 
-## 输出格式
+## Output Format
 
-# 简历项目描述
+# Resume Project Description
 
-## 项目名称
+## Project Name
 
-## 项目简介
+## Project Summary
 
-## 技术栈
+## Tech Stack
 
-## 项目职责
+## Responsibilities
 
-## 技术亮点
+## Technical Highlights
 
-## 可量化成果
+## Measurable Outcomes
 
-## 简历 bullet points
+## Resume Bullet Points
 

@@ -8,9 +8,9 @@ def test_career_agent_stream_returns_sse_final_event() -> None:
         job_response = client.post(
             "/api/jobs",
             json={
-                "title": "AI Agent 实习生",
+                "title": "AI Agent Intern",
                 "company": "Demo",
-                "description": "需要 Python、FastAPI、LLM API、RAG 和 Agent 工作流经验。",
+                "description": "Requires Python, FastAPI, LLM API, RAG, and agent workflow experience.",
             },
         )
         job_id = job_response.json()["id"]
@@ -18,7 +18,7 @@ def test_career_agent_stream_returns_sse_final_event() -> None:
         with client.stream(
             "GET",
             "/api/agents/career/analyze/stream",
-            params={"job_id": job_id, "user_goal": "申请 AI Agent 实习"},
+            params={"job_id": job_id, "user_goal": "Apply for an AI Agent internship"},
         ) as response:
             body = "".join(response.iter_text())
 

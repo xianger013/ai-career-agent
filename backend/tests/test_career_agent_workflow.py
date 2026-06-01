@@ -16,16 +16,16 @@ def test_career_agent_workflow_generates_report(tmp_path) -> None:
 
     db = SessionLocal()
     job = Job(
-        title="AI Agent 实习生",
+        title="AI Agent Intern",
         company="Demo",
-        description="需要 Python、FastAPI、LLM API、RAG、Agent 工作流和测试经验。",
+        description="Requires Python, FastAPI, LLM API, RAG, agent workflow, and testing experience.",
     )
     db.add(job)
     db.flush()
     document = Document(
         filename="profile.md",
         file_type="md",
-        content_text="我做过 Python FastAPI SQLite 项目，并写过 pytest 测试。",
+        content_text="I built a Python FastAPI SQLite project and wrote pytest tests.",
     )
     db.add(document)
     db.flush()
@@ -40,10 +40,10 @@ def test_career_agent_workflow_generates_report(tmp_path) -> None:
     db.commit()
     db.refresh(job)
 
-    result = asyncio.run(CareerAgent(db, output_dir=tmp_path).run(job.id, "申请 AI Agent 实习"))
+    result = asyncio.run(CareerAgent(db, output_dir=tmp_path).run(job.id, "Apply for an AI Agent internship"))
 
     assert result.analysis_id == 1
-    assert result.markdown_report.startswith("# AI Career Agent 分析报告")
+    assert result.markdown_report.startswith("# AI Career Agent Analysis Report")
     assert (tmp_path / "analysis_1.md").exists()
     assert [log.step for log in result.step_logs] == [
         "load_job",

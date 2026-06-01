@@ -1,4 +1,22 @@
-# AI Agent 实习生 JD
+# AI Agent Intern
 
-我们希望候选人熟悉 Python、FastAPI、LLM API 调用、Prompt Engineering、RAG 文档检索、Agent 工作流、SQL 数据库和基础 Docker 部署。加分项包括 React 前端、自动化测试和产品化表达。
+## Company
 
+Demo AI Lab
+
+## Job Description
+
+Responsibilities:
+
+- Build backend services for AI agent applications.
+- Analyze job descriptions and user profile notes.
+- Generate skill-gap analysis and learning plans.
+- Support RAG retrieval and evidence citation.
+
+Requirements:
+
+- Python, FastAPI, SQL, and API design.
+- LLM API integration and prompt engineering.
+- RAG document retrieval.
+- Agent workflow and tool calling.
+- pytest-based automated testing.

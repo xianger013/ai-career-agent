@@ -8,9 +8,9 @@ from app.services.llm_service import LLMServiceError
 def test_job_analyzer_fallback_returns_structured_result() -> None:
     job = Job(
         id=1,
-        title="AI Agent 实习生",
+        title="AI Agent Intern",
         company="Demo",
-        description="需要 Python、FastAPI、LLM API、RAG、Agent 工作流和 pytest 经验。",
+        description="Requires Python, FastAPI, LLM API, RAG, agent workflow, and pytest experience.",
     )
 
     result = asyncio.run(JobAnalyzer().analyze(job))
@@ -31,9 +31,9 @@ class FailingConfiguredLLM:
 def test_job_analyzer_returns_llm_error_metadata_on_provider_failure() -> None:
     job = Job(
         id=2,
-        title="AI Agent 实习生",
+        title="AI Agent Intern",
         company="Demo",
-        description="需要 Python 和 LLM API 经验。",
+        description="Requires Python and LLM API experience.",
     )
 
     result = asyncio.run(JobAnalyzer(llm_service=FailingConfiguredLLM()).analyze(job))

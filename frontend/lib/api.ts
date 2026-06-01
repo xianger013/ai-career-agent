@@ -118,7 +118,7 @@ export function runCareerAgentStream(jobId: number, userGoal: string, handlers: 
     if ("data" in event && typeof event.data === "string" && event.data) {
       handlers.onError?.(JSON.parse(event.data) as { message: string });
     } else {
-      handlers.onError?.({ message: "流式连接失败，请检查后端是否启动" });
+      handlers.onError?.({ message: "Stream connection failed. Check that the backend is running." });
     }
     source.close();
   });

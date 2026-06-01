@@ -1,22 +1,22 @@
-# 学习路线 Prompt
+# Learning Path Prompt
 
-根据能力差距生成阶段化学习路线。
+Generate a phased learning path from the skill gaps.
 
-## 输出格式
+## Output Format
 
-# 学习路线
+# Learning Path
 
-## 第 1 阶段：工程基础
+## Phase 1: Engineering Foundation
 
-## 第 2 阶段：LLM API 调用
+## Phase 2: LLM API Integration
 
-## 第 3 阶段：RAG 文档检索
+## Phase 3: RAG Document Retrieval
 
-## 第 4 阶段：Function Calling / Tool Calling
+## Phase 4: Function Calling / Tool Calling
 
-## 第 5 阶段：Agent 工作流
+## Phase 5: Agent Workflow
 
-## 第 6 阶段：全栈展示与部署
+## Phase 6: Full-Stack Demo And Deployment
 
-每个阶段包含目标、要学的知识、要完成的任务、验收标准和预计时间。
+Each phase should include a goal, knowledge to learn, tasks to complete, acceptance criteria, and estimated time.
 

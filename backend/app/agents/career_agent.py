@@ -78,58 +78,58 @@ class CareerAgent:
         emit: Callable[[str, dict[str, Any]], Awaitable[None]] | None = None,
     ) -> CareerAgentResult:
         self.step_logs = []
-        await self._emit_step(emit, "load_job", "running", "正在读取岗位信息")
+        await self._emit_step(emit, "load_job", "running", "Loading job details")
         job = self._load_job(job_id)
-        await self._emit_step(emit, "load_job", "done", f"已加载岗位 {job.title}")
+        await self._emit_step(emit, "load_job", "done", f"Loaded job {job.title}")
 
-        await self._emit_step(emit, "analyze_job", "running", "正在分析岗位能力要求")
+        await self._emit_step(emit, "analyze_job", "running", "Analyzing job requirements")
         job_analysis = await self.analyze_job_tool.run(job)
-        analyze_summary = f"已提取 {len(job_analysis.get('required_skills', []))} 项核心能力"
+        analyze_summary = f"Extracted {len(job_analysis.get('required_skills', []))} core skills"
         self._log("analyze_job", "done", analyze_summary)
         await self._emit_step(emit, "analyze_job", "done", analyze_summary)
         await self._emit_content(emit, "job_analysis", job_analysis.get("raw_markdown", ""))
 
-        await self._emit_step(emit, "search_profile_evidence", "running", "正在检索用户资料证据")
+        await self._emit_step(emit, "search_profile_evidence", "running", "Retrieving profile evidence")
         query = self._build_profile_query(job_analysis, user_goal)
         profile_evidence = await self.search_profile_tool.run(query, top_k=6)
-        evidence_summary = f"已召回 {len(profile_evidence)} 条资料证据"
+        evidence_summary = f"Retrieved {len(profile_evidence)} evidence chunks"
         self._log("search_profile_evidence", "done", evidence_summary)
         await self._emit_step(emit, "search_profile_evidence", "done", evidence_summary)
         await self._emit_content(emit, "profile_evidence", self._to_json(profile_evidence))
 
-        await self._emit_step(emit, "analyze_gap", "running", "正在分析能力差距")
+        await self._emit_step(emit, "analyze_gap", "running", "Analyzing skill gaps")
         gap_analysis = self.gap_analyzer.analyze(job_analysis, profile_evidence)
-        gap_summary = f"发现 {len(gap_analysis.get('missing_skills', []))} 项明显缺失能力"
+        gap_summary = f"Found {len(gap_analysis.get('missing_skills', []))} missing skills"
         self._log("analyze_gap", "done", gap_summary)
         await self._emit_step(emit, "analyze_gap", "done", gap_summary)
         await self._emit_content(emit, "gap_analysis", self._to_json(gap_analysis))
 
-        await self._emit_step(emit, "generate_learning_plan", "running", "正在生成学习路线和项目方案")
+        await self._emit_step(emit, "generate_learning_plan", "running", "Generating learning plan and project plan")
         learning_plan, project_plan = await self.learning_plan_tool.run(job_analysis, gap_analysis, user_goal)
-        learning_summary = f"已生成 {len(learning_plan.get('phases', []))} 个学习阶段"
+        learning_summary = f"Generated {len(learning_plan.get('phases', []))} learning phases"
         self._log("generate_learning_plan", "done", learning_summary)
         await self._emit_step(emit, "generate_learning_plan", "done", learning_summary)
         await self._emit_content(emit, "learning_plan", self._to_json(learning_plan))
-        await self._emit_step(emit, "generate_project_plan", "running", "正在生成推荐项目方案")
-        self._log("generate_project_plan", "done", "已生成推荐项目方案")
-        await self._emit_step(emit, "generate_project_plan", "done", "已生成推荐项目方案")
+        await self._emit_step(emit, "generate_project_plan", "running", "Generating recommended project plan")
+        self._log("generate_project_plan", "done", "Generated recommended project plan")
+        await self._emit_step(emit, "generate_project_plan", "done", "Generated recommended project plan")
         await self._emit_content(emit, "project_plan", self._to_json(project_plan))
 
-        await self._emit_step(emit, "generate_resume_bullets", "running", "正在生成简历描述")
+        await self._emit_step(emit, "generate_resume_bullets", "running", "Generating resume bullets")
         resume_bullets = await self.resume_tool.run(project_plan, job_analysis)
-        resume_summary = f"已生成 {len(resume_bullets)} 条简历 bullet"
+        resume_summary = f"Generated {len(resume_bullets)} resume bullets"
         self._log("generate_resume_bullets", "done", resume_summary)
         await self._emit_step(emit, "generate_resume_bullets", "done", resume_summary)
         await self._emit_content(emit, "resume_bullets", self._to_json(resume_bullets))
 
-        await self._emit_step(emit, "generate_interview_qa", "running", "正在生成面试问答")
+        await self._emit_step(emit, "generate_interview_qa", "running", "Generating interview Q&A")
         interview_qa = await self.interview_tool.run(job_analysis, gap_analysis, project_plan)
-        interview_summary = f"已生成 {len(interview_qa)} 个面试问答"
+        interview_summary = f"Generated {len(interview_qa)} interview Q&A items"
         self._log("generate_interview_qa", "done", interview_summary)
         await self._emit_step(emit, "generate_interview_qa", "done", interview_summary)
         await self._emit_content(emit, "interview_qa", self._to_json(interview_qa))
 
-        await self._emit_step(emit, "save_markdown_report", "running", "正在组装 Markdown 报告")
+        await self._emit_step(emit, "save_markdown_report", "running", "Assembling Markdown report")
         markdown_report = build_analysis_report(
             job,
             job_analysis,
@@ -140,10 +140,10 @@ class CareerAgent:
             resume_bullets,
             interview_qa,
         )
-        self._log("save_markdown_report", "done", "已生成 Markdown 报告内容")
-        await self._emit_step(emit, "save_markdown_report", "done", "已生成 Markdown 报告内容")
+        self._log("save_markdown_report", "done", "Generated Markdown report content")
+        await self._emit_step(emit, "save_markdown_report", "done", "Generated Markdown report content")
 
-        await self._emit_step(emit, "persist_analysis", "running", "正在保存分析记录和报告文件")
+        await self._emit_step(emit, "persist_analysis", "running", "Saving analysis record and report file")
         record = self._persist_analysis(
             job.id,
             job_analysis,
@@ -160,8 +160,8 @@ class CareerAgent:
             self.output_dir,
             f"analysis_{record.id}.md",
         )
-        self._log("persist_analysis", "done", f"已保存分析记录和报告文件 {report_path.name}")
-        await self._emit_step(emit, "persist_analysis", "done", f"已保存分析记录和报告文件 {report_path.name}")
+        self._log("persist_analysis", "done", f"Saved analysis record and report file {report_path.name}")
+        await self._emit_step(emit, "persist_analysis", "done", f"Saved analysis record and report file {report_path.name}")
 
         return CareerAgentResult(
             analysis_id=record.id,
@@ -181,7 +181,7 @@ class CareerAgent:
         job = self.db.get(Job, job_id)
         if job is None:
             raise ValueError(f"Job {job_id} not found.")
-        self._log("load_job", "done", f"已加载岗位 {job.title}")
+        self._log("load_job", "done", f"Loaded job {job.title}")
         return job
 
     def _build_profile_query(self, job_analysis: dict, user_goal: str) -> str:

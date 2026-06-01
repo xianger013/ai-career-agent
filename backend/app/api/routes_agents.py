@@ -24,7 +24,7 @@ async def run_career_agent(payload: CareerAnalyzeRequest, db: Session = Depends(
 @router.get("/career/analyze/stream")
 async def stream_career_agent(
     job_id: int = Query(..., ge=1),
-    user_goal: str = Query(default="我想分析岗位能力差距并生成学习计划。"),
+    user_goal: str = Query(default="I want to analyze skill gaps and generate a learning plan."),
     db: Session = Depends(get_db),
 ) -> StreamingResponse:
     async def event_generator():

@@ -31,19 +31,19 @@ type UploadResult = {
 type RunStatus = "idle" | "running" | "done" | "error";
 
 const defaultDescription =
-  "需要 Python、FastAPI、LLM API、Prompt Engineering、RAG 文档检索、Agent 工作流和 pytest 测试经验。";
-const sampleTitle = "AI Agent 实习生";
+  "Requires Python, FastAPI, LLM API integration, prompt engineering, RAG retrieval, agent workflow design, and pytest experience.";
+const sampleTitle = "AI Agent Intern";
 const sampleCompany = "Demo AI Lab";
 const sampleDescription = [
-  "岗位职责：参与 AI Agent 应用后端开发，完成岗位 JD 分析、用户资料检索、能力差距分析和学习路线生成。",
-  "技术要求：熟悉 Python、FastAPI、SQL、LLM API 调用、Prompt Engineering、RAG 文档检索、SSE 流式输出和基础前端协作。",
-  "加分项：了解 Agent 工作流、Tool Calling、pytest 自动化测试、Next.js 展示页和 Markdown 报告生成。",
+  "Responsibilities: build backend services for an AI career agent, analyze job descriptions, retrieve profile evidence, detect skill gaps, and generate learning plans.",
+  "Requirements: Python, FastAPI, SQL, LLM API calls, prompt engineering, RAG document retrieval, SSE streaming, and basic frontend collaboration.",
+  "Bonus: agent workflow design, tool calling, pytest automation, Next.js demo pages, and Markdown report generation.",
 ].join("\n\n");
 const sampleGoal =
-  "我想申请 AI Agent 实习生岗位，希望知道能力差距、学习路线、项目建议、简历描述和面试准备。";
+  "I want to apply for an AI Agent internship and need skill-gap analysis, a learning plan, project ideas, resume bullets, and interview preparation.";
 
 export default function Home() {
-  const [title, setTitle] = useState("AI Agent 实习生");
+  const [title, setTitle] = useState("AI Agent Intern");
   const [company, setCompany] = useState("Demo Company");
   const [description, setDescription] = useState(defaultDescription);
   const [jobId, setJobId] = useState<number | null>(null);
@@ -51,11 +51,11 @@ export default function Home() {
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploadResult, setUploadResult] = useState<UploadResult | null>(null);
-  const [query, setQuery] = useState("Python FastAPI RAG 项目经验");
+  const [query, setQuery] = useState("Python FastAPI RAG project experience");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [profileMessage, setProfileMessage] = useState("");
 
-  const [userGoal, setUserGoal] = useState("我想申请 AI Agent 实习岗位，希望知道差距和项目路线。");
+  const [userGoal, setUserGoal] = useState("I want to apply for an AI Agent internship and need a practical gap analysis and project roadmap.");
   const [runStatus, setRunStatus] = useState<RunStatus>("idle");
   const [steps, setSteps] = useState<StreamStep[]>([]);
   const [contentPreview, setContentPreview] = useState<Record<string, string>>({});
@@ -65,13 +65,13 @@ export default function Home() {
   const eventSourceRef = useRef<EventSource | null>(null);
 
   async function handleCreateJob() {
-    setJobMessage("正在创建岗位...");
+    setJobMessage("Creating job...");
     try {
       const job = await createJob({ title, company, description });
       setJobId(job.id);
-      setJobMessage(`岗位已创建，job_id=${job.id}`);
+      setJobMessage(`Job created. job_id=${job.id}`);
     } catch (error) {
-      setJobMessage(error instanceof Error ? error.message : "创建岗位失败");
+      setJobMessage(error instanceof Error ? error.message : "Failed to create job");
     }
   }
 
@@ -79,53 +79,53 @@ export default function Home() {
     setTitle(sampleTitle);
     setCompany(sampleCompany);
     setDescription(sampleDescription);
-    setJobMessage("已填充示例岗位，请点击创建岗位。");
+    setJobMessage("Sample job filled. Click Create job to continue.");
   }
 
   function fillSampleGoal() {
     setUserGoal(sampleGoal);
-    setAgentMessage("已填充示例目标。");
+    setAgentMessage("Sample goal filled.");
   }
 
   async function handleUpload() {
     if (!selectedFile) {
-      setProfileMessage("请先选择 .md 或 .txt 文件。");
+      setProfileMessage("Choose a .md or .txt file first.");
       return;
     }
-    setProfileMessage("正在上传资料...");
+    setProfileMessage("Uploading profile...");
     try {
       const result = await uploadDocument(selectedFile);
       setUploadResult(result);
-      setProfileMessage(`上传成功，切分 ${result.chunk_count} 个片段，检索模式：${retrievalModeLabel(result.retrieval_mode)}。`);
+      setProfileMessage(`Upload complete. Split into ${result.chunk_count} chunks. Retrieval mode: ${retrievalModeLabel(result.retrieval_mode)}.`);
     } catch (error) {
-      setProfileMessage(error instanceof Error ? error.message : "上传失败");
+      setProfileMessage(error instanceof Error ? error.message : "Upload failed");
     }
   }
 
   async function handleSearch() {
     if (!query.trim()) {
-      setProfileMessage("请填写检索 query。");
+      setProfileMessage("Enter a search query.");
       return;
     }
-    setProfileMessage("正在检索资料...");
+    setProfileMessage("Searching profile evidence...");
     try {
       const response = await searchDocuments(query, 5);
       setSearchResults(response.results);
-      setProfileMessage(`检索完成，模式：${retrievalModeLabel(response.retrieval_mode)}，返回 ${response.results.length} 条片段。`);
+      setProfileMessage(`Search complete. Mode: ${retrievalModeLabel(response.retrieval_mode)}. Returned ${response.results.length} chunks.`);
     } catch (error) {
-      setProfileMessage(error instanceof Error ? error.message : "检索失败");
+      setProfileMessage(error instanceof Error ? error.message : "Search failed");
     }
   }
 
   function handleRunAgent() {
     if (!jobId) {
-      setAgentMessage("请先创建岗位。");
+      setAgentMessage("Create a job first.");
       setRunStatus("error");
       return;
     }
 
     if (!userGoal.trim()) {
-      setAgentMessage("请填写目标。");
+      setAgentMessage("Enter a goal.");
       setRunStatus("error");
       return;
     }
@@ -136,7 +136,7 @@ export default function Home() {
     setContentPreview({});
     setMarkdownReport("");
     setAnalysisId(null);
-    setAgentMessage("Career Agent 正在运行...");
+    setAgentMessage("Career Agent is running...");
 
     eventSourceRef.current = runCareerAgentStream(jobId, userGoal, {
       onStep: (payload) => {
@@ -152,10 +152,10 @@ export default function Home() {
         setRunStatus("done");
         setAnalysisId(payload.analysis_id);
         setMarkdownReport(payload.markdown_report);
-        setAgentMessage(`分析完成，analysis_id=${payload.analysis_id}`);
+        setAgentMessage(`Analysis complete. analysis_id=${payload.analysis_id}`);
         setSteps((current) => [
           ...current,
-          { name: "final", status: "done", message: "分析完成" },
+          { name: "final", status: "done", message: "Analysis complete" },
         ]);
       },
       onError: (payload) => {
@@ -168,7 +168,7 @@ export default function Home() {
   async function handleCopyReport() {
     if (!markdownReport) return;
     await navigator.clipboard.writeText(markdownReport);
-    setAgentMessage("报告已复制到剪贴板。");
+    setAgentMessage("Report copied to clipboard.");
   }
 
   function handleDownloadReport() {
@@ -183,32 +183,32 @@ export default function Home() {
     anchor.click();
     anchor.remove();
     URL.revokeObjectURL(url);
-    setAgentMessage("Markdown 报告已下载。");
+    setAgentMessage("Markdown report downloaded.");
   }
 
   return (
     <main className="mx-auto flex min-h-screen max-w-7xl flex-col gap-6 px-5 py-8">
       <header className="rounded-3xl border border-line bg-white/85 p-7 shadow-card backdrop-blur">
         <p className="text-sm font-semibold uppercase tracking-[0.18em] text-accent">AI Career Agent</p>
-        <h1 className="mt-2 text-3xl font-semibold text-ink">AI Career Agent 工作台</h1>
+        <h1 className="mt-2 text-3xl font-semibold text-ink">AI Career Agent Workspace</h1>
         <p className="mt-3 max-w-3xl text-base text-muted">
-          岗位分析 / 资料检索 / 能力差距 / 学习路线 / 简历描述生成
+          Job analysis / profile retrieval / skill gaps / learning plans / resume bullets
         </p>
       </header>
 
       <section className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
         <div className="flex flex-col gap-6">
-          <Card title="1. 岗位输入区" description="创建岗位后会得到 job_id，后续 Agent 基于该岗位运行。">
+          <Card title="1. Job Input" description="Create a job to get a job_id. The agent will run against that job.">
             <button className="button-secondary" onClick={fillSampleJob}>
-              填充示例岗位
+              Fill sample job
             </button>
-            <Field label="岗位标题">
+            <Field label="Job title">
               <input className="input" value={title} onChange={(event) => setTitle(event.target.value)} />
             </Field>
-            <Field label="公司">
+            <Field label="Company">
               <input className="input" value={company} onChange={(event) => setCompany(event.target.value)} />
             </Field>
-            <Field label="岗位 JD">
+            <Field label="Job description">
               <textarea
                 className="input min-h-36 resize-y"
                 value={description}
@@ -217,45 +217,51 @@ export default function Home() {
             </Field>
             <div className="flex flex-wrap items-center gap-3">
               <button className="button-primary" onClick={handleCreateJob}>
-                创建岗位
+                Create job
               </button>
-              <span className="text-sm text-muted">{jobMessage || "尚未创建岗位"}</span>
+              <span className="text-sm text-muted">{jobMessage || "No job created yet"}</span>
             </div>
             {jobId ? <Badge>job_id: {jobId}</Badge> : null}
           </Card>
 
-          <Card title="2. 个人资料上传区" description="当前支持 .md / .txt；可使用 fallback 检索或 Embedding + JSON VectorStore。">
-            <Field label="选择文件">
-              <input
-                className="block w-full rounded-xl border border-line bg-white px-3 py-2 text-sm"
-                type="file"
-                accept=".md,.txt"
-                onChange={(event) => setSelectedFile(event.target.files?.[0] ?? null)}
-              />
+          <Card title="2. Profile Upload" description="Supports .md and .txt files with fallback search or Embedding + JSON VectorStore.">
+            <Field label="Choose file">
+              <div className="flex flex-wrap items-center gap-3 rounded-xl border border-line bg-white px-3 py-2 text-sm">
+                <label className="button-secondary cursor-pointer">
+                  Choose file
+                  <input
+                    className="sr-only"
+                    type="file"
+                    accept=".md,.txt"
+                    onChange={(event) => setSelectedFile(event.target.files?.[0] ?? null)}
+                  />
+                </label>
+                <span className="text-muted">{selectedFile?.name ?? "No file selected"}</span>
+              </div>
             </Field>
             <div className="flex flex-wrap items-center gap-3">
               <button className="button-primary" onClick={handleUpload}>
-                上传资料
+                Upload profile
               </button>
-              <span className="text-sm text-muted">{profileMessage || "尚未上传资料"}</span>
+              <span className="text-sm text-muted">{profileMessage || "No profile uploaded yet"}</span>
             </div>
             {uploadResult ? (
               <div className="rounded-xl bg-paper p-3 text-sm text-ink">
-                文件：{uploadResult.filename}，类型：{uploadResult.file_type}，片段：{uploadResult.chunk_count}
-                ，检索模式：{retrievalModeLabel(uploadResult.retrieval_mode)}
+                File: {uploadResult.filename}, type: {uploadResult.file_type}, chunks: {uploadResult.chunk_count},
+                retrieval mode: {retrievalModeLabel(uploadResult.retrieval_mode)}
               </div>
             ) : null}
-            <Field label="检索测试 query">
+            <Field label="Search test query">
               <input className="input" value={query} onChange={(event) => setQuery(event.target.value)} />
             </Field>
             <button className="button-secondary" onClick={handleSearch}>
-              检索资料
+              Search profile
             </button>
           </Card>
 
-          <Card title="3. Agent 运行区" description="通过 SSE 接收阶段式 step/content/final 事件。">
+          <Card title="3. Agent Runner" description="Receives stage-level step/content/final events through SSE.">
             <button className="button-secondary" onClick={fillSampleGoal}>
-              填充示例目标
+              Fill sample goal
             </button>
             <Field label="user_goal">
               <textarea
@@ -266,20 +272,20 @@ export default function Home() {
             </Field>
             <div className="flex flex-wrap items-center gap-3">
               <button className="button-primary" disabled={runStatus === "running"} onClick={handleRunAgent}>
-                运行 Career Agent
+                Run Career Agent
               </button>
               <Badge tone={runStatus === "error" ? "danger" : runStatus === "done" ? "success" : "neutral"}>
                 {runStatus}
               </Badge>
             </div>
-            <p className="text-sm text-muted">{agentMessage || "等待运行"}</p>
+            <p className="text-sm text-muted">{agentMessage || "Waiting to run"}</p>
           </Card>
         </div>
 
         <div className="flex flex-col gap-6">
-          <Card title="资料检索结果" description="用于确认上传资料是否能被召回。">
+          <Card title="Profile Search Results" description="Confirms whether uploaded profile evidence can be retrieved.">
             {searchResults.length === 0 ? (
-              <EmptyText>暂无检索结果</EmptyText>
+              <EmptyText>No search results yet</EmptyText>
             ) : (
               <div className="space-y-3">
                 {searchResults.map((result) => (
@@ -295,9 +301,9 @@ export default function Home() {
             )}
           </Card>
 
-          <Card title="步骤日志" description="每个 Agent 阶段开始和结束都会写入这里。">
+          <Card title="Step Log" description="Each agent stage writes start and finish events here.">
             {steps.length === 0 ? (
-              <EmptyText>暂无步骤日志</EmptyText>
+              <EmptyText>No step logs yet</EmptyText>
             ) : (
               <div className="space-y-2">
                 {steps.map((step, index) => (
@@ -315,9 +321,9 @@ export default function Home() {
             )}
           </Card>
 
-          <Card title="阶段内容预览" description="SSE content 事件的最新片段。">
+          <Card title="Stage Content Preview" description="Latest snippets from SSE content events.">
             {Object.keys(contentPreview).length === 0 ? (
-              <EmptyText>暂无阶段内容</EmptyText>
+              <EmptyText>No stage content yet</EmptyText>
             ) : (
               <div className="space-y-3">
                 {Object.entries(contentPreview).map(([section, content]) => (
@@ -330,13 +336,13 @@ export default function Home() {
             )}
           </Card>
 
-          <Card title="4. 报告展示区" description="渲染最终 Markdown 报告，同时保留复制和下载原文。">
+          <Card title="4. Report Viewer" description="Renders the final Markdown report and keeps copy/download actions available.">
             <div className="mb-3 flex justify-end gap-3">
               <button className="button-secondary" disabled={!markdownReport} onClick={handleCopyReport}>
-                复制 Markdown
+                Copy Markdown
               </button>
               <button className="button-secondary" disabled={!markdownReport} onClick={handleDownloadReport}>
-                下载 Markdown 报告
+                Download Markdown report
               </button>
             </div>
             {markdownReport ? (
@@ -344,7 +350,7 @@ export default function Home() {
                 <ReactMarkdown>{markdownReport}</ReactMarkdown>
               </article>
             ) : (
-              <EmptyText>运行 Career Agent 后显示最终 Markdown 报告</EmptyText>
+              <EmptyText>Run Career Agent to display the final Markdown report</EmptyText>
             )}
           </Card>
         </div>
@@ -354,16 +360,16 @@ export default function Home() {
 }
 
 function statusLabel(status: StreamStep["status"]) {
-  if (status === "running") return "进行中";
-  if (status === "done") return "已完成";
-  return "错误";
+  if (status === "running") return "Running";
+  if (status === "done") return "Done";
+  return "Error";
 }
 
 function retrievalModeLabel(mode: string) {
   if (mode === "fallback") return "fallback keyword search";
   if (mode === "vector") return "Embedding + JSON VectorStore";
-  if (mode === "fallback_due_to_vector_error") return "向量检索失败，已回退 fallback";
-  return mode || "未知模式";
+  if (mode === "fallback_due_to_vector_error") return "vector retrieval failed; fell back to keyword search";
+  return mode || "unknown mode";
 }
 
 function Card({

@@ -18,7 +18,7 @@ class JobAnalyzer:
             {"role": "system", "content": prompt},
             {
                 "role": "user",
-                "content": f"岗位标题: {job.title}\n公司: {job.company}\n岗位 JD:\n{job.description}",
+                "content": f"Job title: {job.title}\nCompany: {job.company}\nJob description:\n{job.description}",
             },
         ]
 
@@ -48,13 +48,13 @@ class JobAnalyzer:
             "FastAPI": ["fastapi"],
             "SQLAlchemy": ["sqlalchemy"],
             "SQL/SQLite": ["sql", "sqlite", "postgres"],
-            "LLM API": ["llm", "openai", "chat completions", "大模型"],
-            "Prompt Engineering": ["prompt", "提示词"],
-            "RAG": ["rag", "检索", "向量", "embedding"],
-            "Agent Workflow": ["agent", "工作流", "tool calling", "function calling"],
+            "LLM API": ["llm", "openai", "chat completions", "large language model"],
+            "Prompt Engineering": ["prompt", "prompt engineering"],
+            "RAG": ["rag", "retrieval", "vector", "embedding"],
+            "Agent Workflow": ["agent", "workflow", "tool calling", "function calling"],
             "Docker": ["docker"],
             "React/Next.js": ["react", "next.js", "nextjs"],
-            "Testing": ["pytest", "test", "测试"],
+            "Testing": ["pytest", "test", "testing"],
         }
         found = [
             skill
@@ -67,14 +67,14 @@ class JobAnalyzer:
         ai_skills = [skill for skill in found if skill in {"LLM API", "Prompt Engineering", "RAG", "Agent Workflow"}]
         engineering = [skill for skill in found if skill not in set(ai_skills)]
         responsibilities = [
-            "拆解岗位 JD 中的能力要求",
-            "构建可复用的 AI Agent 工作流",
-            "结合用户资料生成可执行的学习和项目路线",
+            "Break down job-description requirements into reusable skill signals",
+            "Build a reusable AI agent workflow",
+            "Generate an actionable learning and project roadmap from profile evidence",
         ]
-        if "rag" in text or "检索" in text:
-            responsibilities.append("实现文档检索和证据引用能力")
-        if "api" in text or "后端" in text:
-            responsibilities.append("提供稳定的后端 API 服务")
+        if "rag" in text or "retrieval" in text:
+            responsibilities.append("Implement document retrieval and evidence citation")
+        if "api" in text or "backend" in text:
+            responsibilities.append("Provide stable backend API services")
 
         analysis = {
             "job_id": job.id,
@@ -83,13 +83,13 @@ class JobAnalyzer:
             "role_type": job.title,
             "core_responsibilities": responsibilities,
             "required_skills": found,
-            "bonus_skills": ["部署经验", "自动化测试", "产品化表达"],
+            "bonus_skills": ["Deployment experience", "Automated testing", "Product-oriented communication"],
             "engineering_skills": engineering,
             "ai_skills": ai_skills or ["LLM API", "Prompt Engineering"],
-            "product_skills": ["需求拆解", "结果结构化展示", "用户目标对齐"],
+            "product_skills": ["Requirement breakdown", "Structured result presentation", "User-goal alignment"],
             "suggested_projects": [
-                "AI Career Agent 求职能力分析系统",
-                "基于 RAG 的个人知识库问答助手",
+                "AI Career Agent skill-gap analysis workspace",
+                "RAG-based personal knowledge-base assistant",
             ],
         }
         analysis["raw_markdown"] = raw_markdown or self._build_markdown(analysis)
@@ -101,14 +101,14 @@ class JobAnalyzer:
 
         return "\n\n".join(
             [
-                "# 岗位分析结果",
-                f"## 1. 岗位类型判断\n{analysis['role_type']}",
-                f"## 2. 核心工作内容\n{lines(analysis['core_responsibilities'])}",
-                f"## 3. 必备技术能力\n{lines(analysis['required_skills'])}",
-                f"## 4. 加分能力\n{lines(analysis['bonus_skills'])}",
-                f"## 5. AI Agent 相关能力\n{lines(analysis['ai_skills'])}",
-                f"## 6. 工程开发能力\n{lines(analysis['engineering_skills'])}",
-                "## 7. 对初学者的优先级建议\n- 先完成后端闭环，再补齐检索质量和前端展示。",
-                f"## 8. 可用于补齐能力的项目方向\n{lines(analysis['suggested_projects'])}",
+                "# Job Analysis Result",
+                f"## 1. Role Type\n{analysis['role_type']}",
+                f"## 2. Core Responsibilities\n{lines(analysis['core_responsibilities'])}",
+                f"## 3. Required Technical Skills\n{lines(analysis['required_skills'])}",
+                f"## 4. Bonus Skills\n{lines(analysis['bonus_skills'])}",
+                f"## 5. AI Agent Skills\n{lines(analysis['ai_skills'])}",
+                f"## 6. Engineering Skills\n{lines(analysis['engineering_skills'])}",
+                "## 7. Priority Advice For Beginners\n- Complete the backend loop first, then improve retrieval quality and frontend presentation.",
+                f"## 8. Project Directions To Close Skill Gaps\n{lines(analysis['suggested_projects'])}",
             ]
         )
