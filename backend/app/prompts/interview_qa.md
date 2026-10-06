@@ -1,20 +1,20 @@
-# 面试问答 Prompt
+# Interview Q&A Prompt
 
-根据项目方案和技术实现，生成面试准备问答。
+Generate interview preparation questions and answers from the project plan and technical implementation.
 
-## 输出格式
+## Output Format
 
-# 面试问答
+# Interview Q&A
 
-## 项目介绍类问题
+## Project Introduction Questions
 
-## 技术实现类问题
+## Technical Implementation Questions
 
-## Prompt 设计类问题
+## Prompt Design Questions
 
-## RAG 类问题
+## RAG Questions
 
-## Agent 架构类问题
+## Agent Architecture Questions
 
-## 工程问题与改进方向
+## Engineering Tradeoffs And Improvement Directions
 

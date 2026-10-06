@@ -1,43 +1,28 @@
 # Release Checklist
 
-## 代码检查
+Use this checklist before tagging a public release or submitting the project for review.
 
-- [ ] 后端 pytest 通过
-- [ ] 前端 npm run build 通过
-- [ ] 无真实 API Key
-- [ ] .env 未提交
-- [ ] .env.local 未提交
-- [ ] 数据库文件未提交
-- [ ] vector_store 数据未提交
-- [ ] outputs 报告未提交
-- [ ] README 启动步骤可复现
+## Required Checks
 
-## 演示检查
+- [ ] `python -m pytest` passes in `backend`.
+- [ ] `npm run build` passes in `frontend`.
+- [ ] CI is green on the release branch.
+- [ ] README quick-start commands still work.
+- [ ] Screenshots match the current English UI.
+- [ ] No public docs or display files contain Chinese text.
+- [ ] `.env.example` contains no real secrets.
+- [ ] Generated outputs and uploaded user files are not committed.
 
-- [ ] 首页可访问
-- [ ] 示例岗位可填充
-- [ ] 岗位可创建
-- [ ] 文档可上传
-- [ ] 文档可检索
-- [ ] Agent 可运行
-- [ ] 报告可渲染
-- [ ] 报告可复制
-- [ ] 报告可下载
+## Documentation
 
-## GitHub 检查
+- [ ] README includes status, setup, demo flow, limitations, and roadmap links.
+- [ ] `CONTRIBUTING.md` explains how to report issues and test changes.
+- [ ] `docs/roadmap.md` reflects the next planned work.
+- [ ] `docs/codex_for_oss_application.md` is current if used for an application.
 
-- [ ] README 有项目简介
-- [ ] README 有技术栈
-- [ ] README 有截图占位
-- [ ] README 有快速开始
-- [ ] README 有已知限制
-- [ ] docs 文档完整
+## Maintainer Review
 
-## 简历检查
-
-- [ ] resume_final.md 已完成
-- [ ] interview_script.md 已完成
-- [ ] interview_qa.md 已完成
-- [ ] 项目限制表述诚实
-- [ ] 不夸大 ChromaDB/FAISS
-
+- [ ] Adoption metrics are stated honestly.
+- [ ] Known limitations are visible.
+- [ ] PR description includes tests run.
+- [ ] Any external API use is optional or clearly documented.

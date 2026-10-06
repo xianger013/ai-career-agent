@@ -1,37 +1,40 @@
 # AI Career Agent
 
-## 1. 项目简介
+[![CI](https://github.com/xianger013/ai-career-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/xianger013/ai-career-agent/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-AI Career Agent 是一个面向大学生和求职者的 AI 求职能力分析与学习规划系统。用户可以输入岗位 JD、上传个人资料，系统通过 LLM、RAG、Agent 工作流和 SSE，生成岗位能力拆解、个人能力差距分析、学习路线、项目建议、简历描述和面试问答。
+AI Career Agent is an open-source full-stack workspace that helps students and job seekers turn a job description and personal profile notes into a structured career plan. It combines FastAPI, Next.js, an agent workflow, RAG-style profile retrieval, SSE streaming, and Markdown report generation.
 
-项目定位是作品集级全栈 AI Agent：默认可用 fallback keyword search 本地演示，也支持配置 OpenAI-compatible Embedding + 本地 JSON VectorStore 进行向量检索。
+The project is intentionally useful without paid services: `RAG_MODE=fallback` runs deterministic keyword retrieval for local demos, while `RAG_MODE=vector` supports OpenAI-compatible embeddings with a local JSON VectorStore.
 
-## 2. 项目截图
+## Screenshots
 
-![首页截图](docs/assets/homepage.png)
+![Workspace home](docs/assets/homepage.png)
 
-![创建岗位截图](docs/assets/job-created.png)
+![Job created](docs/assets/job-created.png)
 
-![Agent 运行截图](docs/assets/agent-running.png)
+![Profile search results](docs/assets/document-search.png)
 
-![报告结果截图](docs/assets/report-result.png)
+![Agent step log](docs/assets/agent-running.png)
 
-![报告下载截图](docs/assets/report-download.png)
+![Markdown report](docs/assets/report-result.png)
 
-## 3. 核心功能
+![Report actions](docs/assets/report-download.png)
 
-- 岗位 JD 创建与分析。
-- 个人资料 `.md` / `.txt` 上传。
-- fallback keyword search 本地检索。
-- OpenAI-compatible Embedding + JSON VectorStore 向量检索。
-- CareerAgent 工作流编排。
-- SSE 阶段式流式输出。
-- Markdown 报告渲染、复制、下载。
-- 示例岗位和示例目标一键填充。
+## Core Features
 
-## 4. 技术栈
+- Job description creation and structured role analysis.
+- Profile upload for `.md` and `.txt` files.
+- Local fallback keyword retrieval for zero-key demos.
+- OpenAI-compatible embeddings with a JSON VectorStore.
+- CareerAgent workflow orchestration with reusable tools.
+- Stage-level SSE events for step logs and content previews.
+- Markdown report rendering, copy, and download actions.
+- Deterministic tests for backend retrieval, agent flow, and fallback behavior.
 
-后端：
+## Tech Stack
+
+Backend:
 
 - FastAPI
 - Pydantic
@@ -40,7 +43,7 @@ AI Career Agent 是一个面向大学生和求职者的 AI 求职能力分析与
 - httpx
 - pytest
 
-前端：
+Frontend:
 
 - Next.js
 - React
@@ -49,15 +52,15 @@ AI Career Agent 是一个面向大学生和求职者的 AI 求职能力分析与
 - react-markdown
 - SSE / EventSource
 
-AI：
+AI workflow:
 
 - OpenAI-compatible Chat Completions API
 - OpenAI-compatible Embeddings API
-- Prompt Engineering
-- RAG
-- Agent Workflow
+- Prompt files
+- RAG-style retrieval
+- Agent workflow and tool calling
 
-## 5. 系统架构
+## Architecture
 
 ```mermaid
 flowchart LR
@@ -71,11 +74,11 @@ flowchart LR
     C --> I["Markdown Report"]
 ```
 
-## 6. 快速开始
+## Quick Start
 
-### 后端启动
+### Backend
 
-Windows PowerShell 推荐使用 `python -m uvicorn`。
+On Windows PowerShell, prefer `python -m ...` so the active interpreter is used consistently.
 
 ```powershell
 cd backend
@@ -84,129 +87,119 @@ Copy-Item .env.example .env
 python -m uvicorn app.main:app --reload
 ```
 
-后端地址：
+Backend URL:
 
 ```text
 http://127.0.0.1:8000
 ```
 
-健康检查：
+Health check:
 
 ```powershell
 curl.exe http://127.0.0.1:8000/health
 ```
 
-API 文档：
+API docs:
 
 ```text
 http://127.0.0.1:8000/docs
 ```
 
-### 前端启动
+### Frontend
 
 ```powershell
 cd frontend
-npm install
+npm ci
 Copy-Item .env.example .env.local
 npm run dev
 ```
 
-访问：
+Open:
 
 ```text
 http://localhost:3000
 ```
 
-## 7. 环境变量说明
+## Environment Variables
 
-后端配置见 `backend/.env.example`。
+Backend settings live in `backend/.env.example`.
 
-- `LLM_API_KEY`：LLM API Key，占位符可用于 fallback 演示。
-- `LLM_BASE_URL`：OpenAI-compatible chat completions base URL。
-- `LLM_MODEL`：聊天模型名称。
-- `RAG_MODE`：`fallback` 或 `vector`。
-- `EMBEDDING_API_KEY`：embedding API Key，仅 vector 模式需要。
-- `EMBEDDING_BASE_URL`：OpenAI-compatible embeddings base URL。
-- `EMBEDDING_MODEL`：embedding 模型名称。
-- `VECTOR_STORE_TYPE=json`：当前版本使用本地 JSON VectorStore。
-- `NEXT_PUBLIC_API_BASE_URL`：前端连接后端地址，默认 `http://127.0.0.1:8000`。
+- `LLM_API_KEY`: LLM API key. The placeholder enables fallback demos.
+- `LLM_BASE_URL`: OpenAI-compatible chat completions base URL.
+- `LLM_MODEL`: Chat model name.
+- `RAG_MODE`: `fallback` or `vector`.
+- `EMBEDDING_API_KEY`: Embedding API key, required only for vector mode.
+- `EMBEDDING_BASE_URL`: OpenAI-compatible embeddings base URL.
+- `EMBEDDING_MODEL`: Embedding model name.
+- `VECTOR_STORE_TYPE=json`: current local JSON VectorStore.
+- `NEXT_PUBLIC_API_BASE_URL`: frontend backend URL, default `http://127.0.0.1:8000`.
 
-说明：
+Notes:
 
-- `RAG_MODE=fallback` 不需要 embedding key。
-- `RAG_MODE=vector` 需要 embedding API。
-- 当前版本使用 OpenAI-compatible Embedding + 本地 JSON VectorStore，后续可替换为 ChromaDB/FAISS。
-- `chroma` / `faiss` 只是未来可选值，当前尚未实际接入。
+- `RAG_MODE=fallback` does not require an embedding key.
+- `RAG_MODE=vector` requires an embedding API.
+- ChromaDB and FAISS are roadmap targets, not current dependencies.
 
-## 8. 完整演示流程
+## Demo Flow
 
-1. 启动后端。
-2. 启动前端。
-3. 打开 `http://localhost:3000`。
-4. 点击“填充示例岗位”。
-5. 点击“创建岗位”，确认页面显示 `job_id`。
-6. 上传 `backend/data/samples/sample_profile.md` 或自己的 `my_profile.md`。
-7. 点击“检索资料”查看召回片段。
-8. 点击“填充示例目标”。
-9. 点击“运行 Career Agent”。
-10. 查看步骤日志。
-11. 查看 Markdown 报告。
-12. 点击“下载 Markdown 报告”。
+1. Start the backend.
+2. Start the frontend.
+3. Open `http://localhost:3000`.
+4. Click `Fill sample job`.
+5. Click `Create job` and confirm the `job_id`.
+6. Upload `backend/data/samples/sample_profile.md` or your own `.md` / `.txt` profile.
+7. Click `Search profile` to inspect retrieved evidence.
+8. Click `Fill sample goal`.
+9. Click `Run Career Agent`.
+10. Review step logs, content previews, and the final Markdown report.
+11. Copy or download the report.
 
-## 9. 测试
+## Tests
 
-后端：
+Backend:
 
 ```powershell
 cd backend
 python -m pytest
 ```
 
-前端：
+Frontend:
 
 ```powershell
 cd frontend
 npm run build
 ```
 
-当前结果：
+Current baseline:
 
-- backend：14 passed
-- frontend：build passed
+- backend: 15 passed
+- frontend: production build passed
 
-## 10. 当前限制
+## Open Source Status
 
-- 当前 SSE 是阶段式流式，不是 token 级流式。
-- 当前向量存储是 JSON VectorStore，不适合大规模生产。
-- 当前没有登录、多用户隔离和权限系统。
-- 当前没有 Docker。
-- 当前没有 reranker 和 hybrid search。
-- ChromaDB/FAISS 尚未实际接入，只预留替换方向。
+This is a young public project created and maintained by `xianger013`. Current public metrics are intentionally reported as they are: 1 GitHub star, 0 forks, and no package download metrics. The project is being prepared as a useful OSS reference implementation for job-search agents, career planning workflows, and local-first AI application demos.
 
-## 11. 后续路线
+Maintainer materials:
 
-- Hybrid Search：keyword + vector。
-- ChromaDB/FAISS。
-- Reranker。
-- PDF / DOCX 解析。
-- Docker 部署。
-- 多用户数据隔离。
-- 更完善的评测集。
+- [Contributing guide](CONTRIBUTING.md)
+- [Roadmap](docs/roadmap.md)
+- [Codex for OSS application notes](docs/codex_for_oss_application.md)
+- [Release checklist](docs/release_checklist.md)
 
-## 12. 简历包装
+## Current Limitations
 
-简短表述：
+- SSE is stage-level streaming, not token-level streaming.
+- JSON VectorStore is for small demos, not production-scale retrieval.
+- Authentication, multi-user isolation, and permissions are not implemented yet.
+- Docker, hybrid search, and reranking are roadmap items.
 
-> AI Career Agent 是一个面向大学生求职的 AI Agent 工作台，基于 FastAPI、Next.js、LLM API、RAG 和 SSE，实现岗位 JD 分析、个人资料检索、能力差距分析、学习路线生成、项目建议、简历描述和面试问答生成。
+## Documentation
 
-详细简历版本见 [docs/resume_final.md](docs/resume_final.md)。
-
-## 文档索引
-
-- [演示指南](docs/demo_guide.md)
-- [RAG 设计](docs/rag_design.md)
-- [简历最终表述](docs/resume_final.md)
-- [面试讲解稿](docs/interview_script.md)
-- [技术问答](docs/interview_qa.md)
-- [项目复盘](docs/project_retrospective.md)
-- [发布前检查清单](docs/release_checklist.md)
+- [Demo guide](docs/demo_guide.md)
+- [RAG design](docs/rag_design.md)
+- [Backend acceptance notes](docs/backend_mvp_acceptance.md)
+- [Technical review](docs/technical_review.md)
+- [Project retrospective](docs/project_retrospective.md)
+- [Interview Q&A](docs/interview_qa.md)
+- [Interview script](docs/interview_script.md)
+- [Resume positioning](docs/resume_final.md)

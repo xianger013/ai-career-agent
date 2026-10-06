@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "AI Career Agent 工作台",
-  description: "岗位分析 / 资料检索 / 能力差距 / 学习路线 / 简历描述生成",
+  title: "AI Career Agent Workspace",
+  description: "Job analysis, profile retrieval, skill gaps, learning plans, and resume bullets",
 };
 
 export default function RootLayout({
@@ -12,7 +12,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN">
+    <html lang="en">
       <body>{children}</body>
     </html>
   );

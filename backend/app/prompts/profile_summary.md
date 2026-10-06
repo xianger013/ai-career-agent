@@ -1,15 +1,15 @@
-# 资料摘要 Prompt
+# Profile Summary Prompt
 
-根据用户上传的个人资料、学习笔记或项目记录，总结用户已经具备的能力、项目证据和可用于简历包装的经历。
+Summarize existing skills, project evidence, and resume-ready experience from uploaded profile notes, learning notes, or project records.
 
-## 输入
+## Input
 
-- 用户资料片段
+- Profile snippets
 
-## 输出
+## Output
 
-- 已具备能力
-- 项目证据
-- 可复用简历素材
-- 需要补充的证明材料
+- Existing skills
+- Project evidence
+- Reusable resume material
+- Missing evidence to add
 

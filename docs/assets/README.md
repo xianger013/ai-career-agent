@@ -1,13 +1,12 @@
-# Demo Screenshots
+# Demo Assets
 
-这里用于存放项目演示截图。请将本地演示截图保存到 `docs/assets/` 下。
+This directory stores English screenshots used by the public README.
 
-建议截图：
+Recommended screenshot set:
 
-1. `homepage.png`：首页和工作台。
-2. `job-created.png`：岗位创建成功。
-3. `document-search.png`：资料检索结果。
-4. `agent-running.png`：Agent 步骤日志。
-5. `report-result.png`：Markdown 报告渲染结果。
-6. `report-download.png`：报告下载结果。
-
+1. `homepage.png`: workspace home and job input.
+2. `job-created.png`: job creation success state.
+3. `document-search.png`: profile evidence retrieval.
+4. `agent-running.png`: agent step log.
+5. `report-result.png`: rendered Markdown report.
+6. `report-download.png`: report action state without OS-native dialogs.

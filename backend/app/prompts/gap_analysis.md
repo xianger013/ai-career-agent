@@ -1,18 +1,18 @@
-# 能力差距分析 Prompt
+# Skill Gap Analysis Prompt
 
-根据岗位能力要求和用户资料证据，分析用户当前能力差距。
+Analyze the user's current skill gaps from the job requirements and retrieved profile evidence.
 
-## 输出格式
+## Output Format
 
-# 能力差距分析
+# Skill Gap Analysis
 
-## 1. 已具备能力
+## 1. Existing Skills
 
-## 2. 部分具备但需要强化的能力
+## 2. Partially Covered Skills That Need Strengthening
 
-## 3. 当前明显缺失的能力
+## 3. Clearly Missing Skills
 
-## 4. 优先补齐顺序
+## 4. Priority Order
 
-## 5. 最近 30 天行动建议
+## 5. Next 30 Days Action Plan
 

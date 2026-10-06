@@ -1,6 +1,9 @@
-# 项目笔记样例
+# Sample Project Notes
 
-项目目标：实现一个 AI Career Agent，可以创建岗位 JD、上传个人资料、检索相关经历并生成学习计划。
+Project: AI Career Agent
 
-关键模块：FastAPI、SQLAlchemy、fallback 检索、CareerAgent 工作流、Markdown 报告。
+Implemented a FastAPI backend with SQLAlchemy models, profile upload, fallback keyword retrieval, and a CareerAgent workflow.
 
+Added a Next.js frontend that displays job input, profile retrieval results, agent step logs, and a rendered Markdown report.
+
+Current improvement goals include Docker, hybrid retrieval, a production vector store, and evaluation fixtures.

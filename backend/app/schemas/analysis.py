@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field
 
 class CareerAnalyzeRequest(BaseModel):
     job_id: int = Field(..., ge=1)
-    user_goal: str = Field(default="我想分析岗位能力差距并生成学习计划。")
+    user_goal: str = Field(default="I want to analyze skill gaps and generate a learning plan.")
 
 
 class StepLog(BaseModel):
