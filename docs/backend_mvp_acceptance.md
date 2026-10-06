@@ -20,4 +20,4 @@ The backend MVP is accepted when the following checks pass.
 
 ## Current Baseline
 
-The current backend baseline is 14 passing pytest tests.
+The current backend baseline is 15 passing pytest tests.

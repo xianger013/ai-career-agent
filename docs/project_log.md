@@ -15,7 +15,7 @@ This log records the main implementation milestones.
 
 ## Current Baseline
 
-- Backend tests: 14 passing.
+- Backend tests: 15 passing.
 - Frontend build: passing.
 - Public adoption metrics: 1 star, 0 forks, no package downloads.
 

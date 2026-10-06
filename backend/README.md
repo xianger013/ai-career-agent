@@ -77,4 +77,4 @@ cd backend
 python -m pytest
 ```
 
-Baseline: 14 tests passing.
+Baseline: 15 tests passing.
