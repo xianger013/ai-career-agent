@@ -48,13 +48,13 @@ class JobAnalyzer:
             "FastAPI": ["fastapi"],
             "SQLAlchemy": ["sqlalchemy"],
             "SQL/SQLite": ["sql", "sqlite", "postgres"],
-            "LLM API": ["llm", "openai", "chat completions", "large language model"],
-            "Prompt Engineering": ["prompt", "prompt engineering"],
-            "RAG": ["rag", "retrieval", "vector", "embedding"],
-            "Agent Workflow": ["agent", "workflow", "tool calling", "function calling"],
+            "LLM API": ["llm", "openai", "chat completions", "large language model", "\\u5927\\u6a21\\u578b"],
+            "Prompt Engineering": ["prompt", "prompt engineering", "\\u63d0\\u793a\\u8bcd"],
+            "RAG": ["rag", "retrieval", "vector", "embedding", "\\u68c0\\u7d22", "\\u5411\\u91cf"],
+            "Agent Workflow": ["agent", "workflow", "tool calling", "function calling", "\\u5de5\\u4f5c\\u6d41"],
             "Docker": ["docker"],
             "React/Next.js": ["react", "next.js", "nextjs"],
-            "Testing": ["pytest", "test", "testing"],
+            "Testing": ["pytest", "test", "testing", "\\u6d4b\\u8bd5"],
         }
         found = [
             skill
@@ -71,9 +71,9 @@ class JobAnalyzer:
             "Build a reusable AI agent workflow",
             "Generate an actionable learning and project roadmap from profile evidence",
         ]
-        if "rag" in text or "retrieval" in text:
+        if "rag" in text or "retrieval" in text or "\\u68c0\\u7d22" in text:
             responsibilities.append("Implement document retrieval and evidence citation")
-        if "api" in text or "backend" in text:
+        if "api" in text or "backend" in text or "\\u540e\\u7aef" in text:
             responsibilities.append("Provide stable backend API services")
 
         analysis = {
